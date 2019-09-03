@@ -1,30 +1,130 @@
 <html>
-	<head>
-	</head>
-	<body>
+<head>
+</head>
+<body>
 <!--[if lte IE 8]>
 <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
 <![endif]-->
 <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-  hbspt.forms.create({
-	portalId: "4628060",
-	formId: "1ac1f8dd-38c0-4bb3-8105-d92f07e27593",
-	onFormReady: function($form) {
-        console.log("onFormReady");
-        console.log($form);
-        
- 		for (var i = 0; i < $form.length; i++) {
-			$form[i].addEventListener('change',updateValue);
-		}
+	hbspt.forms.create({
+		portalId: "4628060",
+		formId: "1ac1f8dd-38c0-4bb3-8105-d92f07e27593",
+		onFormReady: function($form) {
+			console.log("onFormReady");
+			console.log($form);
 
-		function updateValue(e) {
-			console.log(e);
+			for (var i = 0; i < $form.length; i++) {
+				$form[i].addEventListener('change',updateValue);
+			}
+
+			function updateValue(e) {
+
+				var prices = {
+					default: 5,
+					perPlatform: {
+						social: 10,
+						offline: 50
+					},
+					perView: {
+						master: 2,
+						detail: 2,
+						form: 4
+					}
+				}
+
+				var totalPrice = prices.default * 3; //3 = Wireframes, Design, Estimation
+
+				// Views
+
+				var numberOfMasterViews = e.target.getRootNode().getElementsByName("number_master_views")[0].value;
+				var numberOfDetailViews = e.target.getRootNode().getElementsByName("number_detail_views")[0].value;
+				var numberOfEditViews = e.target.getRootNode().getElementsByName("number_edit_views")[0].value;
+
+
+				var priceFeatures = 0;
+
+				// Additional features
+				var additionalFeatures = e.target.getRootNode().getElementsByName("additional_features");
+				for (var i = 0; i < additionalFeatures.length; i++) {
+					if (additionalFeatures[i].checked) {
+						switch (additionalFeatures[i].value) {
+							case "Erstellen von PDFs (Rechnungen etc.)":
+								priceFeatures += 10;
+								break;
+							case "Analyse der App-Nutzung":
+								priceFeatures += 10;
+								break;
+							case "Nachrichten schreiben (wie in Whatsapp)":
+								priceFeatures += 10;
+								break;
+							case "Kommentieren und \"Liken\"":
+								priceFeatures += 10;
+								break;
+							case "Offline Speichern":
+								priceFeatures += 50;
+								break;
+							default:
+								priceFeatures += 5;
+						}
+					}
+				}
+
+				// Advanced features
+				var advancedFeatures = e.target.getRootNode().getElementsByName("advanced_features");
+				for (var i = 0; i < advancedFeatures.length; i++) {
+					if (advancedFeatures[i].checked) {
+						switch (advancedFeatures[i].value) {
+							case "Erstellen von PDFs (Rechnungen etc.)":
+								priceFeatures += 10;
+								break;
+							case "Analyse der App-Nutzung":
+								priceFeatures += 10;
+								break;
+							default:
+								priceFeatures += 5;
+								break;
+						}
+					}
+				}
+
+				// CMS
+
+				var contentManagementSystem = e.target.getRootNode().getElementsByName("content_management_system");
+
+				// Number of platforms
+				for (var i = 0; i < contentManagementSystem.length; i++) {
+					if (contentManagementSystem[i].checked) {
+						switch (contentManagementSystem[i].value) {
+							case "High end":
+								priceFeatures += 30;
+								break;
+							case "Wordpress oder ähnlich":
+								priceFeatures += 10;
+								break;
+							default:
+								priceFeatures += 0;
+								break;
+						}
+					}
+				}
+
+				// Number of platforms
+				var numberOfPlatforms = 0;
+				var platforms = e.target.getRootNode().getElementsByName("platform")
+				for (var i = 0; i < platforms.length; i++) {
+					if (platforms[i].checked) {
+						numberOfPlatforms++;
+					}
+				}
+
+				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfDetailViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
+				e.target.getRootNode().getElementById("value").innerText = totalPrice + ".000 €";
+			}
 		}
-	} 
-});
+	});
 
 </script>
-	</body>
+</body>
 </html>
