@@ -8,15 +8,14 @@
 <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-	hbspt.forms.create({
-		portalId: "4628060",
-		formId: "1ac1f8dd-38c0-4bb3-8105-d92f07e27593",
-		onFormReady: function($form) {
-			console.log("onFormReady");
-			console.log($form);
+	window.addEventListener('message', function(event) {
 
-			for (var i = 0; i < $form.length; i++) {
-				$form[i].addEventListener('change',updateValue);
+		if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormReady') {
+
+			var form = document.getElementsByTagName("form")[0];
+
+			for (var i = 0; i < form.length; i++) {
+				form[i].addEventListener('change',updateValue);
 			}
 
 			function updateValue(e) {
