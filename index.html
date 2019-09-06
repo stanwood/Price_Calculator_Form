@@ -7,6 +7,25 @@
 <![endif]-->
 <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--[if lte IE 8]>
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+<![endif]-->
+<style>
+	.hs-form-field {
+		padding: 0 50px 0 0 !important;
+	}
+	form h1 {
+		background: #EEEEEE;
+		padding: 20px;
+	}
+	input {
+		margin-right: 10px;
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+</style>
+<script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	window.addEventListener('message', function(event) {
 
@@ -38,7 +57,6 @@
 				// Views
 
 				var numberOfMasterViews = e.target.getRootNode().getElementsByName("number_master_views")[0].value;
-				var numberOfDetailViews = e.target.getRootNode().getElementsByName("number_detail_views")[0].value;
 				var numberOfEditViews = e.target.getRootNode().getElementsByName("number_edit_views")[0].value;
 
 
@@ -118,7 +136,7 @@
 					}
 				}
 
-				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfDetailViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
+				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
 				e.target.getRootNode().getElementById("value").innerText = totalPrice + ".000 €";
 			}
 		}
