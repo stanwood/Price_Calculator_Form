@@ -138,6 +138,13 @@
 
 				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
 				e.target.getRootNode().getElementById("value").innerText = totalPrice + ".000 €";
+
+				//TRACKING
+				if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
+					dataLayer.push({'form_field_name': e.target.name});
+					dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
+					dataLayer.push({'event': 'price_calculator_form_entry'});
+				}
 			}
 		}
 	});
