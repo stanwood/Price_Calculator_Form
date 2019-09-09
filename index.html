@@ -150,7 +150,7 @@
 				}
 
 				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
-				e.target.getRootNode().getElementById("value").innerText = totalPrice + ".000 €";
+				e.target.getRootNode().getElementsByName("cost_estimate")[0].value = totalPrice * 1000;
 
 				//TRACKING
 				if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
