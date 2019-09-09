@@ -10,6 +10,9 @@
 <!--[if lte IE 8]>
 <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
 <![endif]-->
+<!--[if lte IE 8]>
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+<![endif]-->
 <style>
 	.hs-form-field {
 		padding: 0 50px 0 0 !important;
@@ -22,6 +25,16 @@
 		margin-right: 10px;
 		margin-bottom: 10px;
 		margin-top: 10px;
+	}
+	h1 {
+		font-size: 20px !important;
+	}
+	.padding20tb {
+		padding: 0px !important;
+	}
+	input[type="radio"], input[type="checkbox"] {
+		height: 20px !important;
+		width: 20px !important;
 	}
 </style>
 <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
@@ -143,6 +156,7 @@
 				if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
 					dataLayer.push({'form_field_name': e.target.name});
 					dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
+					dataLayer.push({'form_total_value': totalPrice});
 					dataLayer.push({'event': 'price_calculator_form_entry'});
 				}
 			}
