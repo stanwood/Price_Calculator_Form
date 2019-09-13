@@ -38,6 +38,12 @@
 	}
 </style>
 <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
+<script>
+  hbspt.forms.create({
+	portalId: "4628060",
+	formId: "1ac1f8dd-38c0-4bb3-8105-d92f07e27593"
+});
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	window.addEventListener('message', function(event) {
@@ -45,6 +51,11 @@
 		if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormReady') {
 
 			var form = document.getElementsByTagName("form")[0];
+
+			// Dev enviroment
+			if (form == undefined) {
+				form = event.source.document.getElementsByTagName("form")[0];
+			}
 
 			for (var i = 0; i < form.length; i++) {
 				form[i].addEventListener('change',updateValue);
@@ -67,11 +78,43 @@
 
 				var totalPrice = prices.default * 3; //3 = Wireframes, Design, Estimation
 
+				var details = "<table class='cost-details'>";
+				details += "<tr><th>Feature </th><th>Android </th><th>iOS </th><th>Web </th><th>Gesamt </th></tr>/n";
+				details += "<tr><td>Beratung </td><td> </td><td> </td><td> </td><td>5.000 &euro; </td></tr>/n";
+				details += "<tr><td>Konzeption </td><td> </td><td> </td><td> </td><td>5.000 &euro; </td></tr>/n";
+				details += "<tr><td>Design </td><td> </td><td><td> </td> </td><td>5.000 &euro; </td></tr>/n";
+				//details += "<tr><td> </td><td> </td><td> </td><td> </td></tr>/n";
+
+				var isAndroid = 0;
+				var isiOS = 0;
+				var isWeb = 0;
+
+				// Number of platforms
+				var numberOfPlatforms = 0;
+				var platforms = e.target.getRootNode().getElementsByName("platform")
+				for (var i = 0; i < platforms.length; i++) {
+					if (platforms[i].checked) {
+						numberOfPlatforms++;
+
+						if (platforms[i].value == "Android") {
+							isAndroid = 1;
+						}
+						if (platforms[i].value == "iOS") {
+							isiOS = 1;
+						}
+						if (platforms[i].value == "Web") {
+							isWeb = 1;
+						}
+					}
+				}
+
 				// Views
 
 				var numberOfMasterViews = e.target.getRootNode().getElementsByName("number_master_views")[0].value;
 				var numberOfEditViews = e.target.getRootNode().getElementsByName("number_edit_views")[0].value;
 
+				details += "<tr><td>Einfache Ansichten<br><label>(a 2000 &euro;)</label> </td><td>" + numberOfMasterViews * isAndroid * 2000 + " &euro; </td><td>" + numberOfMasterViews * isiOS * 2000 + " &euro; </td><td>" + numberOfMasterViews * isWeb * 2000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * 2000 + " &euro; </td></tr>/n";
+				details += "<tr><td>Komplexe Ansichten<br><label>(a 4000 &euro;)</label> </td><td>" + numberOfEditViews * isAndroid * 4000 + " &euro; </td><td>" + numberOfEditViews * isiOS * 4000 + " &euro; </td><td>" + numberOfEditViews * isWeb * 4000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * 4000 + " &euro; </td></tr>/n";
 
 				var priceFeatures = 0;
 
@@ -79,25 +122,29 @@
 				var additionalFeatures = e.target.getRootNode().getElementsByName("additional_features");
 				for (var i = 0; i < additionalFeatures.length; i++) {
 					if (additionalFeatures[i].checked) {
+						var pricePerFeature = 0;
 						switch (additionalFeatures[i].value) {
 							case "Erstellen von PDFs (Rechnungen etc.)":
-								priceFeatures += 10;
+								pricePerFeature = 10;
 								break;
 							case "Analyse der App-Nutzung":
-								priceFeatures += 10;
+								pricePerFeature = 10;
 								break;
 							case "Nachrichten schreiben (wie in Whatsapp)":
-								priceFeatures += 10;
+								pricePerFeature = 10;
 								break;
 							case "Kommentieren und \"Liken\"":
-								priceFeatures += 10;
+								pricePerFeature = 10;
 								break;
 							case "Offline Speichern":
-								priceFeatures += 50;
+								pricePerFeature = 50;
 								break;
 							default:
-								priceFeatures += 5;
+								pricePerFeature = 5;
 						}
+						priceFeatures += pricePerFeature
+
+						details += "<tr><td>" + additionalFeatures[i].value + " </td><td>" + isAndroid * pricePerFeature * 1000 + " &euro; </td><td>" + isiOS * pricePerFeature * 1000 + " &euro; </td><td>" + isWeb * pricePerFeature * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro; </td></tr>/n";
 					}
 				}
 
@@ -105,17 +152,22 @@
 				var advancedFeatures = e.target.getRootNode().getElementsByName("advanced_features");
 				for (var i = 0; i < advancedFeatures.length; i++) {
 					if (advancedFeatures[i].checked) {
+						var pricePerFeature = 0;
 						switch (advancedFeatures[i].value) {
 							case "Erstellen von PDFs (Rechnungen etc.)":
-								priceFeatures += 10;
+								pricePerFeature += 10;
 								break;
 							case "Analyse der App-Nutzung":
-								priceFeatures += 10;
+								pricePerFeature += 10;
 								break;
 							default:
-								priceFeatures += 5;
+								pricePerFeature += 5;
 								break;
 						}
+
+						priceFeatures += pricePerFeature;
+
+						details += "<tr><td>" + advancedFeatures[i].value + " </td><td>" + isAndroid * pricePerFeature * 1000 + " &euro; </td><td>" + isiOS * pricePerFeature * 1000 + " &euro; </td><td>" + isWeb * pricePerFeature * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro; </td></tr>/n";
 					}
 				}
 
@@ -130,33 +182,39 @@
 							case "High end":
 								priceFeatures += 30;
 								break;
-							case "Wordpress oder ähnlich":
-								priceFeatures += 10;
-								break;
-							default:
+							case "Nein":
 								priceFeatures += 0;
 								break;
+							default:
+								priceFeatures += 10;
+								break;
 						}
-					}
-				}
 
-				// Number of platforms
-				var numberOfPlatforms = 0;
-				var platforms = e.target.getRootNode().getElementsByName("platform")
-				for (var i = 0; i < platforms.length; i++) {
-					if (platforms[i].checked) {
-						numberOfPlatforms++;
+						console.log(contentManagementSystem[i].value);
+
+						details += "<tr><td>Content Management System<br><label>" + contentManagementSystem[i].value + "</label> </td><td>" + isAndroid * priceFeatures * 1000 + " &euro; </td><td>" + isiOS * priceFeatures * 1000 + " &euro; </td><td>" + isWeb * priceFeatures * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * priceFeatures * 1000 + " &euro; </td></tr>/n";
 					}
 				}
 
 				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
+
+				details += "<tr><td>GESAMT </td><td> </td><td> </td><td> </td><td>" + totalPrice * 1000 + " &euro; </td></tr>/n";
+				details += "</table><p>Ihr Projekt wird ca. " + Math.ceil((totalPrice * 1000) / (numberOfPlatforms  * 100 * 30 * 4 * 1.5)) + " Monate dauern.</p>"
+
 				e.target.getRootNode().getElementsByName("cost_estimate")[0].value = totalPrice * 1000;
+				e.target.getRootNode().getElementsByName("cost_details")[0].value = details;
+
+				//For dev enviroment
+				if (document.getElementById("table")) {
+					document.getElementById("table").innerHTML = details;
+				}
 
 				//TRACKING
 				if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
 					dataLayer.push({'form_field_name': e.target.name});
 					dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
 					dataLayer.push({'form_total_value': totalPrice});
+					dataLayer.push({'form_total_string': details});
 					dataLayer.push({'event': 'price_calculator_form_entry'});
 				}
 			}
@@ -164,5 +222,8 @@
 	});
 
 </script>
+<p id="table">
+	Table
+</p>
 </body>
 </html>
