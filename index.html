@@ -79,11 +79,11 @@
 				var totalPrice = prices.default * 3; //3 = Wireframes, Design, Estimation
 
 				var details = "<table class='cost-details'>";
-				details += "<tr><th>Feature </th><th>Android </th><th>iOS </th><th>Web </th><th>Gesamt </th></tr>/n";
-				details += "<tr><td>Beratung </td><td> </td><td> </td><td> </td><td>5.000 &euro; </td></tr>/n";
-				details += "<tr><td>Konzeption </td><td> </td><td> </td><td> </td><td>5.000 &euro; </td></tr>/n";
-				details += "<tr><td>Design </td><td> </td><td><td> </td> </td><td>5.000 &euro; </td></tr>/n";
-				//details += "<tr><td> </td><td> </td><td> </td><td> </td></tr>/n";
+				details += "<tr><th>Feature</th><th>Android</th><th>iOS</th><th>Web</th><th>Gesamt</th></tr>";
+				details += "<tr><td>Beratung</td><td></td><td></td><td></td><td>5000 &euro;</td></tr>";
+				details += "<tr><td>Konzeption</td><td></td><td></td><td></td><td>5000 &euro;</td></tr>";
+				details += "<tr><td>Design</td><td></td><td><td></td></td><td>5000 &euro;</td></tr>";
+				//details += "<tr><td></td><td></td><td></td><td></td></tr>";
 
 				var isAndroid = 0;
 				var isiOS = 0;
@@ -113,8 +113,8 @@
 				var numberOfMasterViews = e.target.getRootNode().getElementsByName("number_master_views")[0].value;
 				var numberOfEditViews = e.target.getRootNode().getElementsByName("number_edit_views")[0].value;
 
-				details += "<tr><td>Einfache Ansichten<br><label>(a 2000 &euro;)</label> </td><td>" + numberOfMasterViews * isAndroid * 2000 + " &euro; </td><td>" + numberOfMasterViews * isiOS * 2000 + " &euro; </td><td>" + numberOfMasterViews * isWeb * 2000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * 2000 + " &euro; </td></tr>/n";
-				details += "<tr><td>Komplexe Ansichten<br><label>(a 4000 &euro;)</label> </td><td>" + numberOfEditViews * isAndroid * 4000 + " &euro; </td><td>" + numberOfEditViews * isiOS * 4000 + " &euro; </td><td>" + numberOfEditViews * isWeb * 4000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * 4000 + " &euro; </td></tr>/n";
+				details += "<tr><td>Einfache Ansichten<br><label>(a 2000 &euro;)</label></td><td>" + numberOfMasterViews * isAndroid * 2000 + " &euro;</td><td>" + numberOfMasterViews * isiOS * 2000 + " &euro;</td><td>" + numberOfMasterViews * isWeb * 2000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * numberOfMasterViews * 2000 + " &euro;</td></tr>";
+				details += "<tr><td>Komplexe Ansichten<br><label>(a 4000 &euro;)</label></td><td>" + numberOfEditViews * isAndroid * 4000 + " &euro;</td><td>" + numberOfEditViews * isiOS * 4000 + " &euro;</td><td>" + numberOfEditViews * isWeb * 4000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * numberOfEditViews * 4000 + " &euro;</td></tr>";
 
 				var priceFeatures = 0;
 
@@ -144,7 +144,7 @@
 						}
 						priceFeatures += pricePerFeature
 
-						details += "<tr><td>" + additionalFeatures[i].value + " </td><td>" + isAndroid * pricePerFeature * 1000 + " &euro; </td><td>" + isiOS * pricePerFeature * 1000 + " &euro; </td><td>" + isWeb * pricePerFeature * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro; </td></tr>/n";
+						details += "<tr><td>" + additionalFeatures[i].value + "</td><td>" + isAndroid * pricePerFeature * 1000 + " &euro;</td><td>" + isiOS * pricePerFeature * 1000 + " &euro;</td><td>" + isWeb * pricePerFeature * 1000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro;</td></tr>";
 					}
 				}
 
@@ -167,7 +167,7 @@
 
 						priceFeatures += pricePerFeature;
 
-						details += "<tr><td>" + advancedFeatures[i].value + " </td><td>" + isAndroid * pricePerFeature * 1000 + " &euro; </td><td>" + isiOS * pricePerFeature * 1000 + " &euro; </td><td>" + isWeb * pricePerFeature * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro; </td></tr>/n";
+						details += "<tr><td>" + advancedFeatures[i].value + "</td><td>" + isAndroid * pricePerFeature * 1000 + " &euro;</td><td>" + isiOS * pricePerFeature * 1000 + " &euro;</td><td>" + isWeb * pricePerFeature * 1000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro;</td></tr>";
 					}
 				}
 
@@ -176,30 +176,34 @@
 				var contentManagementSystem = e.target.getRootNode().getElementsByName("content_management_system");
 
 				// Number of platforms
+				var priceCMS = 0;
 				for (var i = 0; i < contentManagementSystem.length; i++) {
 					if (contentManagementSystem[i].checked) {
 						switch (contentManagementSystem[i].value) {
 							case "High end":
-								priceFeatures += 30;
+								priceCMS += 30;
 								break;
 							case "Nein":
-								priceFeatures += 0;
+								priceCMS += 0;
 								break;
 							default:
-								priceFeatures += 10;
+								priceCMS += 10;
 								break;
 						}
 
 						console.log(contentManagementSystem[i].value);
 
-						details += "<tr><td>Content Management System<br><label>" + contentManagementSystem[i].value + "</label> </td><td>" + isAndroid * priceFeatures * 1000 + " &euro; </td><td>" + isiOS * priceFeatures * 1000 + " &euro; </td><td>" + isWeb * priceFeatures * 1000 + " &euro; </td><td>" + (isAndroid + isiOS + isWeb) * priceFeatures * 1000 + " &euro; </td></tr>/n";
+						details += "<tr><td>Content Management System<br><label>" + contentManagementSystem[i].value + "</label></td><td></td><td></td><td></td><td>" + priceCMS * 1000 + " &euro;</td></tr>";
 					}
 				}
 
-				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms;
+				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms + priceCMS;
 
-				details += "<tr><td>GESAMT </td><td> </td><td> </td><td> </td><td>" + totalPrice * 1000 + " &euro; </td></tr>/n";
+				details += "<tr><td>GESAMT</td><td></td><td></td><td></td><td>" + totalPrice * 1000 + " &euro;</td></tr>";
 				details += "</table><p>Ihr Projekt wird ca. " + Math.ceil((totalPrice * 1000) / (numberOfPlatforms  * 100 * 30 * 4 * 1.5)) + " Monate dauern.</p>"
+
+				//Add "." between 000
+				details = details.replace(/000 €/g, ".000 €");
 
 				e.target.getRootNode().getElementsByName("cost_estimate")[0].value = totalPrice * 1000;
 				e.target.getRootNode().getElementsByName("cost_details")[0].value = details;
