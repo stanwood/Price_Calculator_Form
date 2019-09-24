@@ -203,7 +203,7 @@
 				details += "</table><p>Ihr Projekt wird ca. " + Math.ceil((totalPrice * 1000) / (numberOfPlatforms  * 100 * 30 * 4 * 1.5)) + " Monate dauern.</p>"
 
 				//Add "." between 000
-				details = details.replace(/000 €/g, ".000 €");
+				details = details.replace(/000 &euro;/g, ".000 &euro;");
 
 				e.target.getRootNode().getElementsByName("cost_estimate")[0].value = totalPrice * 1000;
 				e.target.getRootNode().getElementsByName("cost_details")[0].value = details;
