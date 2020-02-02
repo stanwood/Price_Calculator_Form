@@ -1,4 +1,4 @@
-# Fooxes Price Calculator Form
+# App Development Price Calculator Form
 
 This form is used on Fooxes' and Stanwood's website to estimate prices.
 

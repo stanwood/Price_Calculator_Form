@@ -206,47 +206,68 @@
 </script>
 <form>
 	<div id="calculator_question_1">
-			<p><b>App Kategorie</b></p>
-			<div>
-				<input type="radio" id="category_education" name="category" value="education">
-				<label for="category_education">Bildung</label>
-			</div>
-
-			<div>
-				<input type="radio" id="category_business" name="category" value="business">
-				<label for="category_business">Business</label>
-			</div>
-
-			<div>
-				<input type="radio" id="category_entertainment" name="category" value="entertainment">
-				<label for="category_entertainment">Entertainment</label>
-			</div>
-			<div>
-				<input type="radio" id="category_eat_and_drink" name="category" value="eat_and_drink">
-				<label for="category_eat_and_drink">Essen &amp; Trinken</label>
-			</div>
-			<div>
-				<input type="radio" id="category_other" name="category" value="other">
-				<label for="category_other">Andere</label>
-				<input type="text" name="category_other_text">
-			</div>
-
-			<button type="button">Weiter</button>
-			<br>
-			<label>Frage 1 / 5</label>
+		<p><b>App Kategorie</b></p>
+		<div>
+			<input type="radio" id="category_education" name="category" value="education">
+			<label for="category_education">Bildung</label>
 		</div>
+
+		<div>
+			<input type="radio" id="category_business" name="category" value="business">
+			<label for="category_business">Business</label>
+		</div>
+
+		<div>
+			<input type="radio" id="category_entertainment" name="category" value="entertainment">
+			<label for="category_entertainment">Entertainment</label>
+		</div>
+		<div>
+			<input type="radio" id="category_eat_and_drink" name="category" value="eat_and_drink">
+			<label for="category_eat_and_drink">Essen &amp; Trinken</label>
+		</div>
+		<div>
+			<input type="radio" id="category_other" name="category" value="other">
+			<input type="text" name="category_other_text" placeholder="Andere">
+		</div>
+		<br>
+		<label>Frage 1 / 5</label>
+	</div>
 	<div id="calculator_question_2">
-			<p><b>Anzahl der Ansichten</b></p>
+		<p><b>Anzahl der Ansichten</b></p>
 		<table>
-			<tr>gith
-				<td>Einfach<br><small>&Uuml;bersichten, Listen, Details</small></td>
-				<td><input type="radio" id="number_of_views" name="category" value="education"></td>
+			<tr>
+				<td></td>
+				<td>0</td>
+				<td>1-5</td>
+				<td>6-10</td>
+				<td>Mehr</td>
+			</tr>
+			<tr>
+				<td>
+					Einfach
+					<br>
+					<small>Listen, Details...</small>
+				</td>
+				<td><input type="radio" id="number_of_views_simple_none" name="number_of_simple_views" value="none"></td>
+				<td><input type="radio" id="number_of_views_simple_few" name="number_of_simple_views" value="few"></td>
+				<td><input type="radio" id="number_of_views_simple_medium" name="number_of_simple_views" value="medium"></td>
+				<td><input type="radio" id="number_of_views_simple_loads" name="number_of_simple_views" value="loads"></td>
+			</tr>
+			<tr>
+				<td>
+					Komplex
+					<br>
+					<small>Shop, Chat...</small>
+				</td>
+				<td><input type="radio" id="number_of_views_complex_none" name="number_of_complex_views" value="none"></td>
+				<td><input type="radio" id="number_of_views_complex_few" name="number_of_complex_views" value="few"></td>
+				<td><input type="radio" id="number_of_views_complex_medium" name="number_of_complex_views" value="medium"></td>
+				<td><input type="radio" id="number_of_views_complex_loads" name="number_of_complex_views" value="loads"></td>
 			</tr>
 		</table>
-			<button type="button">Weiter</button>
-			<br>
-			<label>Frage 2 / 5</label>
-		</div>
+		<br>
+		<label>Frage 2 / 5</label>
+	</div>
 </form>
 </body>
 </html>
