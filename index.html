@@ -2,21 +2,7 @@
 <head>
 </head>
 <body>
-<!--[if lte IE 8]>
-<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
-<![endif]-->
-<script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!--[if lte IE 8]>
-<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
-<![endif]-->
-<!--[if lte IE 8]>
-<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
-<![endif]-->
 <style>
-	.hs-form-field {
-		padding: 0 50px 0 0 !important;
-	}
 	form h1 {
 		background: #EEEEEE;
 		padding: 20px;
@@ -37,14 +23,6 @@
 		width: 20px !important;
 	}
 </style>
-<script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/v2.js"></script>
-<script>
-  hbspt.forms.create({
-	portalId: "4628060",
-	formId: "1ac1f8dd-38c0-4bb3-8105-d92f07e27593"
-});
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	window.addEventListener('message', function(event) {
 
@@ -226,8 +204,49 @@
 	});
 
 </script>
-<p id="table">
-	Table
-</p>
+<form>
+	<div id="calculator_question_1">
+			<p><b>App Kategorie</b></p>
+			<div>
+				<input type="radio" id="category_education" name="category" value="education">
+				<label for="category_education">Bildung</label>
+			</div>
+
+			<div>
+				<input type="radio" id="category_business" name="category" value="business">
+				<label for="category_business">Business</label>
+			</div>
+
+			<div>
+				<input type="radio" id="category_entertainment" name="category" value="entertainment">
+				<label for="category_entertainment">Entertainment</label>
+			</div>
+			<div>
+				<input type="radio" id="category_eat_and_drink" name="category" value="eat_and_drink">
+				<label for="category_eat_and_drink">Essen &amp; Trinken</label>
+			</div>
+			<div>
+				<input type="radio" id="category_other" name="category" value="other">
+				<label for="category_other">Andere</label>
+				<input type="text" name="category_other_text">
+			</div>
+
+			<button type="button">Weiter</button>
+			<br>
+			<label>Frage 1 / 5</label>
+		</div>
+	<div id="calculator_question_2">
+			<p><b>Anzahl der Ansichten</b></p>
+		<table>
+			<tr>gith
+				<td>Einfach<br><small>&Uuml;bersichten, Listen, Details</small></td>
+				<td><input type="radio" id="number_of_views" name="category" value="education"></td>
+			</tr>
+		</table>
+			<button type="button">Weiter</button>
+			<br>
+			<label>Frage 2 / 5</label>
+		</div>
+</form>
 </body>
 </html>
