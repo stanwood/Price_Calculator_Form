@@ -214,10 +214,12 @@
 
 		//TRACKING
 		if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
-			dataLayer.push({'form_field_name': e.target.name});
-			dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
-			dataLayer.push({'form_total_value': totalPrice});
-			dataLayer.push({'event': 'price_calculator_form_entry'});
+			dataLayer.push({
+				'form_field_name': e.target.name,
+				'form_field_value': e.target.value + ": " + e.target.checked,
+				'form_total_value': totalPrice,
+				'event': 'price_calculator_form_entry'
+			});
 		}
 	}
 
@@ -293,7 +295,7 @@
 		<br>
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
-		<br>
+		<br><br>
 		<label>Frage 2 / 5</label>
 	</div><!--#calculator_question_1-->
 
@@ -335,7 +337,7 @@
 		<br>
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
-		<br>
+		<br><br>
 		<label>Frage 3 / 5</label>
 	</div><!--#calculator_question_2-->
 
@@ -376,7 +378,7 @@
 		<br>
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
-		<br>
+		<br><br>
 		<label>Frage 3 / 5</label>
 	</div><!--#calculator_question_3-->
 
