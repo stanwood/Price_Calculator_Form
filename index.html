@@ -3,20 +3,14 @@
 </head>
 <body>
 <style>
-	form h1 {
-		background: #EEEEEE;
-		padding: 20px;
+
+	.calculator_question {
+		display: none;
 	}
 	input {
 		margin-right: 10px;
 		margin-bottom: 10px;
 		margin-top: 10px;
-	}
-	h1 {
-		font-size: 20px !important;
-	}
-	.padding20tb {
-		padding: 0px !important;
 	}
 	input[type="radio"], input[type="checkbox"] {
 		height: 20px !important;
@@ -24,215 +18,191 @@
 	}
 </style>
 <script>
-	window.addEventListener('message', function(event) {
 
-		if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormReady') {
+	var currentQuestion = 0;
 
-			var form = document.getElementsByTagName("form")[0];
+	function validEmail(textfield) {
 
-			// Dev enviroment
-			if (form == undefined) {
-				form = event.source.document.getElementsByTagName("form")[0];
+		console.log("validEmail: " + textfield.value);
+		var errorLabel = document.getElementById("error");
+		var submitButton = document.getElementById("submit");
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(textfield.value)) {
+			errorLabel.innerHTML = "Gut gemacht ;-)";
+			errorLabel.style.color = "black";
+			submitButton.disabled = false;
+		} else {
+			errorLabel.innerHTML = "Ung&uuml;ltige E-Mail"
+			errorLabel.style.color = "red";
+			submitButton.disabled = true;
+		}
+	}
+
+	function next() {
+		currentQuestion++;
+		toggleQuestionVisibility();
+	}
+	function prev() {
+		currentQuestion--;
+		toggleQuestionVisibility();
+	}
+	function toggleQuestionVisibility() {
+		var questions = 	document.getElementsByClassName("calculator_question");
+		for (var i = 0; i < 5; i++) {
+			questions[i].style.display = "none";
+		}
+		questions[currentQuestion].style.display = "block";
+
+		if (currentQuestion == 4) {
+			document.getElementById("email")
+		}
+	}
+
+	window.onload = function() {
+		var form = document.getElementsByTagName("form")[0];
+
+		// Constantly update the price to fire GA events
+		for (var i = 0; i < form.length; i++) {
+			form[i].addEventListener('change', updateValue);
+		}
+	}
+
+	function updateValue(e) {
+
+		var pricePerFeature = 5;
+
+		var totalPrice = pricePerFeature * 3; //3 = Wireframes, Design, Estimation
+
+		// Number of platforms
+		var numberOfPlatforms = 0;
+		var platforms = e.target.getRootNode().getElementsByName("platform")
+		for (var i = 0; i < platforms.length; i++) {
+			if (platforms[i].checked) {
+				numberOfPlatforms++;
 			}
+		}
+		if (numberOfPlatforms == 0) {
+			numberOfPlatforms = 1;
+		}
 
-			for (var i = 0; i < form.length; i++) {
-				form[i].addEventListener('change',updateValue);
-			}
-
-			function updateValue(e) {
-
-				var prices = {
-					default: 5,
-					perPlatform: {
-						social: 10,
-						offline: 50
-					},
-					perView: {
-						master: 2,
-						detail: 2,
-						form: 4
-					}
-				}
-
-				var totalPrice = prices.default * 3; //3 = Wireframes, Design, Estimation
-
-				var details = "<table class='cost-details'>";
-				details += "<tr><th>Feature</th><th>Android</th><th>iOS</th><th>Web</th><th>Gesamt</th></tr>";
-				details += "<tr><td>Beratung</td><td></td><td></td><td></td><td>5000 &euro;</td></tr>";
-				details += "<tr><td>Konzeption</td><td></td><td></td><td></td><td>5000 &euro;</td></tr>";
-				details += "<tr><td>Design</td><td></td><td><td></td></td><td>5000 &euro;</td></tr>";
-				//details += "<tr><td></td><td></td><td></td><td></td></tr>";
-
-				var isAndroid = 0;
-				var isiOS = 0;
-				var isWeb = 0;
-
-				// Number of platforms
-				var numberOfPlatforms = 0;
-				var platforms = e.target.getRootNode().getElementsByName("platform")
-				for (var i = 0; i < platforms.length; i++) {
-					if (platforms[i].checked) {
-						numberOfPlatforms++;
-
-						if (platforms[i].value == "Android") {
-							isAndroid = 1;
-						}
-						if (platforms[i].value == "iOS") {
-							isiOS = 1;
-						}
-						if (platforms[i].value == "Web") {
-							isWeb = 1;
-						}
-					}
-				}
-
-				// Views
-
-				var numberOfMasterViews = e.target.getRootNode().getElementsByName("number_master_views")[0].value;
-				var numberOfEditViews = e.target.getRootNode().getElementsByName("number_edit_views")[0].value;
-
-				details += "<tr><td>Einfache Ansichten<br><label>(a 2000 &euro;)</label></td><td>" + numberOfMasterViews * isAndroid * 2000 + " &euro;</td><td>" + numberOfMasterViews * isiOS * 2000 + " &euro;</td><td>" + numberOfMasterViews * isWeb * 2000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * numberOfMasterViews * 2000 + " &euro;</td></tr>";
-				details += "<tr><td>Komplexe Ansichten<br><label>(a 4000 &euro;)</label></td><td>" + numberOfEditViews * isAndroid * 4000 + " &euro;</td><td>" + numberOfEditViews * isiOS * 4000 + " &euro;</td><td>" + numberOfEditViews * isWeb * 4000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * numberOfEditViews * 4000 + " &euro;</td></tr>";
-
-				var priceFeatures = 0;
-
-				// Additional features
-				var additionalFeatures = e.target.getRootNode().getElementsByName("additional_features");
-				for (var i = 0; i < additionalFeatures.length; i++) {
-					if (additionalFeatures[i].checked) {
-						var pricePerFeature = 0;
-						switch (additionalFeatures[i].value) {
-							case "Erstellen von PDFs (Rechnungen etc.)":
-								pricePerFeature = 10;
-								break;
-							case "Analyse der App-Nutzung":
-								pricePerFeature = 10;
-								break;
-							case "Nachrichten schreiben (wie in Whatsapp)":
-								pricePerFeature = 10;
-								break;
-							case "Kommentieren und \"Liken\"":
-								pricePerFeature = 10;
-								break;
-							case "Offline Speichern":
-								pricePerFeature = 50;
-								break;
-							default:
-								pricePerFeature = 5;
-						}
-						priceFeatures += pricePerFeature
-
-						details += "<tr><td>" + additionalFeatures[i].value + "</td><td>" + isAndroid * pricePerFeature * 1000 + " &euro;</td><td>" + isiOS * pricePerFeature * 1000 + " &euro;</td><td>" + isWeb * pricePerFeature * 1000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro;</td></tr>";
-					}
-				}
-
-				// Advanced features
-				var advancedFeatures = e.target.getRootNode().getElementsByName("advanced_features");
-				for (var i = 0; i < advancedFeatures.length; i++) {
-					if (advancedFeatures[i].checked) {
-						var pricePerFeature = 0;
-						switch (advancedFeatures[i].value) {
-							case "Erstellen von PDFs (Rechnungen etc.)":
-								pricePerFeature += 10;
-								break;
-							case "Analyse der App-Nutzung":
-								pricePerFeature += 10;
-								break;
-							default:
-								pricePerFeature += 5;
-								break;
-						}
-
-						priceFeatures += pricePerFeature;
-
-						details += "<tr><td>" + advancedFeatures[i].value + "</td><td>" + isAndroid * pricePerFeature * 1000 + " &euro;</td><td>" + isiOS * pricePerFeature * 1000 + " &euro;</td><td>" + isWeb * pricePerFeature * 1000 + " &euro;</td><td>" + (isAndroid + isiOS + isWeb) * pricePerFeature * 1000 + " &euro;</td></tr>";
-					}
-				}
-
-				// CMS
-
-				var contentManagementSystem = e.target.getRootNode().getElementsByName("content_management_system");
-
-				// Number of platforms
-				var priceCMS = 0;
-				for (var i = 0; i < contentManagementSystem.length; i++) {
-					if (contentManagementSystem[i].checked) {
-						switch (contentManagementSystem[i].value) {
-							case "High end":
-								priceCMS += 30;
-								break;
-							case "Nein":
-								priceCMS += 0;
-								break;
-							default:
-								priceCMS += 10;
-								break;
-						}
-
-						console.log(contentManagementSystem[i].value);
-
-						details += "<tr><td>Content Management System<br><label>" + contentManagementSystem[i].value + "</label></td><td></td><td></td><td></td><td>" + priceCMS * 1000 + " &euro;</td></tr>";
-					}
-				}
-
-				var totalPrice = totalPrice + (priceFeatures + numberOfMasterViews * 2 + numberOfEditViews * 4) * numberOfPlatforms + priceCMS;
-
-				details += "<tr><td>GESAMT</td><td></td><td></td><td></td><td>" + totalPrice * 1000 + " &euro;</td></tr>";
-				details += "</table><p>Ihr Projekt wird ca. " + Math.ceil((totalPrice * 1000) / (numberOfPlatforms  * 100 * 30 * 4 * 1.5)) + " Monate dauern.</p>"
-
-				//Add "." between 000
-				details = details.replace(/000 &euro;/g, ".000 &euro;");
-
-				e.target.getRootNode().getElementsByName("cost_estimate")[0].value = totalPrice * 1000;
-				e.target.getRootNode().getElementsByName("cost_details")[0].value = details;
-
-				//For dev enviroment
-				if (document.getElementById("table")) {
-					document.getElementById("table").innerHTML = details;
-				}
-
-				//TRACKING
-				if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
-					dataLayer.push({'form_field_name': e.target.name});
-					dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
-					dataLayer.push({'form_total_value': totalPrice});
-					dataLayer.push({'form_total_string': details});
-					dataLayer.push({'event': 'price_calculator_form_entry'});
+		// Views
+		var numberOfSimpleViews = 0;
+		var numberOfComplexViews = 0;
+		var views = e.target.getRootNode().getElementsByName("number_of_simple_views");
+		for (var i = 0; i < views.length; i++) {
+			if (views[i].checked) {
+				switch (views[i].value) {
+					case "few":
+						numberOfSimpleViews = 3;
+						break;
+					case "medium":
+						numberOfSimpleViews = 7;
+						break;
+					case "loads":
+						numberOfSimpleViews = 15;
+						break;
+					default:
+						numberOfSimpleViews = 0;
+						break;
 				}
 			}
 		}
-	});
+		var views = e.target.getRootNode().getElementsByName("number_of_complex_views");
+		for (var i = 0; i < views.length; i++) {
+			if (views[i].checked) {
+				switch (views[i].value) {
+					case "few":
+						numberOfComplexViews = 3;
+						break;
+					case "medium":
+						numberOfComplexViews = 7;
+						break;
+					case "loads":
+						numberOfComplexViews = 15;
+						break;
+					default:
+						numberOfComplexViews = 0;
+						break;
+				}
+			}
+		}
 
+		// Additional features
+		var priceFeatures = 0;
+		var additionalFeatures = e.target.getRootNode().getElementsByName("features");
+		for (var i = 0; i < additionalFeatures.length; i++) {
+			if (additionalFeatures[i].checked) {
+				priceFeatures += pricePerFeature;
+			}
+		}
+
+		// CMS
+		var cms = e.target.getRootNode().getElementsByName("cms");
+		var priceCMS = 0;
+		for (var i = 0; i < cms.length; i++) {
+			if (cms[i].checked) {
+				switch (cms[i].value) {
+					case "wordpress":
+						priceCMS += 10;
+						break;
+					case "custom":
+						priceCMS += 30;
+						break;
+					default:
+						priceCMS += 0;
+						break;
+				}
+			}
+		}
+
+		totalPrice = totalPrice + (priceFeatures + numberOfSimpleViews * pricePerFeature * 0.5 + numberOfComplexViews * pricePerFeature) * numberOfPlatforms + priceCMS;
+
+		e.target.getRootNode().getElementsByName("cost_estimate")[0].innerHTML = totalPrice * 1000;
+		console.log(totalPrice);
+
+		//TRACKING
+		if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
+			dataLayer.push({'form_field_name': e.target.name});
+			dataLayer.push({'form_field_value': e.target.value + ": " + e.target.checked});
+			dataLayer.push({'form_total_value': totalPrice});
+			dataLayer.push({'event': 'price_calculator_form_entry'});
+		}
+	}
 </script>
-<form>
-	<div id="calculator_question_1">
+
+<div name="cost_estimate">0€</div>
+
+<form action="https://hooks.zapier.com/hooks/catch/4370689/od27kua/">
+	<div class="calculator_question" id="calculator_question_0" style="display: block;">
 		<p><b>App Kategorie</b></p>
 		<div>
-			<input type="radio" id="category_education" name="category" value="education">
+			<input type="radio" onchange="next();" id="category_education" name="category" value="education">
 			<label for="category_education">Bildung</label>
 		</div>
 
 		<div>
-			<input type="radio" id="category_business" name="category" value="business">
+			<input type="radio" onchange="next();" id="category_business" name="category" value="business">
 			<label for="category_business">Business</label>
 		</div>
 
 		<div>
-			<input type="radio" id="category_entertainment" name="category" value="entertainment">
+			<input type="radio" onchange="next();" id="category_entertainment" name="category" value="entertainment">
 			<label for="category_entertainment">Entertainment</label>
 		</div>
 		<div>
-			<input type="radio" id="category_eat_and_drink" name="category" value="eat_and_drink">
+			<input type="radio" onchange="next();" id="category_eat_and_drink" name="category" value="eat_and_drink">
 			<label for="category_eat_and_drink">Essen &amp; Trinken</label>
 		</div>
 		<div>
-			<input type="radio" id="category_other" name="category" value="other">
-			<input type="text" name="category_other_text" placeholder="Andere">
+			<input type="radio" onchange="next();" id="category_other" name="category" value="other">
+			<input type="text" name="category_other_text" placeholder="Andere" onfocus="document.getElementById('category_other').checked=true;">
 		</div>
 		<br>
+		<button type="button" onclick="next();">Weiter</button>
+		<br>
 		<label>Frage 1 / 5</label>
-	</div>
-	<div id="calculator_question_2">
+	</div><!--#calculator_question_0-->
+
+	<div class="calculator_question" id="calculator_question_1">
 		<p><b>Anzahl der Ansichten</b></p>
 		<table>
 			<tr>
@@ -259,15 +229,120 @@
 					<br>
 					<small>Shop, Chat...</small>
 				</td>
-				<td><input type="radio" id="number_of_views_complex_none" name="number_of_complex_views" value="none"></td>
-				<td><input type="radio" id="number_of_views_complex_few" name="number_of_complex_views" value="few"></td>
-				<td><input type="radio" id="number_of_views_complex_medium" name="number_of_complex_views" value="medium"></td>
-				<td><input type="radio" id="number_of_views_complex_loads" name="number_of_complex_views" value="loads"></td>
+				<td><input type="radio" onchange="next();" id="number_of_views_complex_none" name="number_of_complex_views" value="none"></td>
+				<td><input type="radio" onchange="next();" id="number_of_views_complex_few" name="number_of_complex_views" value="few"></td>
+				<td><input type="radio" onchange="next();" id="number_of_views_complex_medium" name="number_of_complex_views" value="medium"></td>
+				<td><input type="radio" onchange="next();" id="number_of_views_complex_loads" name="number_of_complex_views" value="loads"></td>
 			</tr>
 		</table>
+
+		<br>
+		<button type="button" onclick="prev();">Zur&uuml;ck</button>
+		<button type="button" onclick="next();">Weiter</button>
 		<br>
 		<label>Frage 2 / 5</label>
-	</div>
+	</div><!--#calculator_question_1-->
+
+	<div class="calculator_question" id="calculator_question_2">
+		<p><b>Features</b></p>
+		<div>
+			<input type="checkbox" id="features_account" name="features" value="account">
+			<label for="features_account">Benutzerkonto</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_video" name="features" value="video">
+			<label for="features_video">Videos</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_news" name="features" value="news">
+			<label for="features_news">Nachrichten</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_social" name="features" value="social">
+			<label for="features_social">Kommentare & Likes</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_offline" name="features" value="offline">
+			<label for="features_offline">Offline</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_push" name="features" value="push">
+			<label for="features_push">Push-Nachrichten</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_commerce" name="features" value="commerce">
+			<label for="features_commerce">E-Commerce</label>
+		</div>
+		<div>
+			<input type="checkbox" id="features_other" name="features" value="other">
+			<input type="text" name="features_othe_textr" placeholder="Andere" onfocus="document.getElementById('features_other').checked=true;">
+		</div>
+
+		<br>
+		<button type="button" onclick="prev();">Zur&uuml;ck</button>
+		<button type="button" onclick="next();">Weiter</button>
+		<br>
+		<label>Frage 3 / 5</label>
+	</div><!--#calculator_question_2-->
+
+	<div class="calculator_question" id="calculator_question_3">
+		<p><b>Plattform</b></p>
+		<div>
+			<input type="checkbox" id="platform_ios" name="platform" value="ios">
+			<label for="platform_ios">
+				iOS
+			</label>
+		</div>
+		<div>
+			<input type="checkbox" id="platform_android" name="platform" value="android">
+			<label for="platform_android">
+				Android
+			</label>
+		</div>
+		<div>
+			<input type="checkbox" id="platform_web" name="platform" value="web">
+			<label for="platform_web">Web</label>
+		</div>
+
+		<p><b>Content-Management-System (CMS)</b></p>
+		<div>
+			<input type="radio" onchange="next();" id="cms_none" name="cms" value="none">
+			<label for="cms_none">Keines</small>
+			</label>
+		</div>
+		<div>
+			<input type="radio" onchange="next();" id="cms_wordpress" name="cms" value="wordpress">
+			<label for="cms_wordpress">Einfach z.B. Wordpress</label>
+		</div>
+		<div>
+			<input type="radio" onchange="next();" id="cms_custom" name="cms" value="custom">
+			<label for="cms_custom">Auf mich zugeschnitten</label>
+		</div>
+
+		<br>
+		<button type="button" onclick="prev();">Zur&uuml;ck</button>
+		<button type="button" onclick="next();">Weiter</button>
+		<br>
+		<label>Frage 3 / 5</label>
+	</div><!--#calculator_question_3-->
+
+	<div class="calculator_question" id="calculator_question_4">
+		<p><b>Kontaktdaten</b></p>
+		<p>Wir senden Ihnen Ihre Kostensch&auml;tzung gleich zu.</p>
+		<input id="email" type="email" name="email" placeholder="E-Mail" onkeyup="validEmail(this);" onchange="validEmail(this);">
+		<br>
+		<small id="error">Pflichtfeld</small>
+		<br>
+		<input type="tel" placeholder="Telefon" name="phone">
+		<br>
+		<small>Optional f&uuml;r R&uuml;ckfragen</small></p>
+
+		<br>
+		<button id="submit" type="button" onclick="prev();">Zur&uuml;ck</button>
+		<button type="submit" disabled>Kostensch&auml;tzung anfordern</button>
+		<br>
+		<label>Frage 5 / 5</label>
+	</div><!--#calculator_question_4-->
 </form>
 </body>
 </html>
