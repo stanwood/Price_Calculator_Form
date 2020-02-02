@@ -1,20 +1,40 @@
-<html>
-<head>
-</head>
-<body>
 <style>
 
 	.calculator_question {
 		display: none;
 	}
 	input {
-		margin-right: 10px;
-		margin-bottom: 10px;
-		margin-top: 10px;
+		margin: 10px;
 	}
 	input[type="radio"], input[type="checkbox"] {
 		height: 20px !important;
 		width: 20px !important;
+	}
+	input[type="text"] {
+		width: calc(100% - 80px);
+	}
+
+	.entry-header {
+		display: none !important;
+	}
+
+	@media screen and (max-width: 768px) {
+		.site-header {
+			padding: 0 25px;
+		}
+		.entry-content {
+			margin: 20px !important;
+		}
+	}
+	input ~ label {
+		position: relative;
+		top: -4px;
+	}
+	p {
+		margin: 0 0 10px;
+	}
+	table {
+		table-layout: auto;
 	}
 </style>
 <script>
@@ -46,24 +66,57 @@
 		toggleQuestionVisibility();
 	}
 	function toggleQuestionVisibility() {
-		var questions = 	document.getElementsByClassName("calculator_question");
+		var questions = document.getElementsByClassName("calculator_question");
 		for (var i = 0; i < 5; i++) {
 			questions[i].style.display = "none";
 		}
 		questions[currentQuestion].style.display = "block";
 
 		if (currentQuestion == 4) {
-			document.getElementById("email")
+			document.getElementById("email").focus();
 		}
 	}
 
 	window.onload = function() {
-		var form = document.getElementsByTagName("form")[0];
+
+		var form = document.forms['calculator'];
 
 		// Constantly update the price to fire GA events
 		for (var i = 0; i < form.length; i++) {
 			form[i].addEventListener('change', updateValue);
 		}
+
+		// Fetch the POST to handle the sending more elagantly.
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			var submitButton = document.getElementById("submit");
+			submitButton.disabled = true;
+			submitButton.innerHTML = "Bitte warten";
+
+			fetch(event.target.action, {
+				method: 'POST',
+				body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+			}).then((resp) => {
+				return resp.json(); // or resp.text() or whatever the server sends
+			}).then((body) => {
+
+				console.log(body);
+
+				// Show thank you
+				var form = document.forms['calculator'];
+				form.style.display = "none";
+				var thankYou = document.getElementById("thank_you");
+				thankYou.style.display = "block";
+				thankYou.innerHTML = thankYou.innerHTML.replace("{{email}}", document.getElementById("email").value);
+
+			}).catch((error) => {
+				alert(error);
+				var submitButton = document.getElementById("submit");
+				submitButton.disabled = false;
+				submitButton.innerHTML = "Erneut probieren";
+			});
+		});
 	}
 
 	function updateValue(e) {
@@ -95,7 +148,7 @@
 						numberOfSimpleViews = 3;
 						break;
 					case "medium":
-						numberOfSimpleViews = 7;
+						numberOfSimpleViews = 8;
 						break;
 					case "loads":
 						numberOfSimpleViews = 15;
@@ -114,7 +167,7 @@
 						numberOfComplexViews = 3;
 						break;
 					case "medium":
-						numberOfComplexViews = 7;
+						numberOfComplexViews = 8;
 						break;
 					case "loads":
 						numberOfComplexViews = 15;
@@ -155,8 +208,8 @@
 		}
 
 		totalPrice = totalPrice + (priceFeatures + numberOfSimpleViews * pricePerFeature * 0.5 + numberOfComplexViews * pricePerFeature) * numberOfPlatforms + priceCMS;
+		document.getElementById("cost").value = totalPrice;
 
-		e.target.getRootNode().getElementsByName("cost_estimate")[0].innerHTML = totalPrice * 1000;
 		console.log(totalPrice);
 
 		//TRACKING
@@ -167,13 +220,14 @@
 			dataLayer.push({'event': 'price_calculator_form_entry'});
 		}
 	}
+
 </script>
 
-<div name="cost_estimate">0€</div>
-
-<form action="https://hooks.zapier.com/hooks/catch/4370689/od27kua/">
+<form id="calculator" action="https://hooks.zapier.com/hooks/catch/4370689/od27kua/" method="post">
+	<input type="hidden" id="cost" name="cost" value="15">
 	<div class="calculator_question" id="calculator_question_0" style="display: block;">
-		<p><b>App Kategorie</b></p>
+		<p><b>App-Kosten sch&auml;tzen</b></p>
+		<p><b>Kategorie</b></p>
 		<div>
 			<input type="radio" onchange="next();" id="category_education" name="category" value="education">
 			<label for="category_education">Bildung</label>
@@ -193,12 +247,12 @@
 			<label for="category_eat_and_drink">Essen &amp; Trinken</label>
 		</div>
 		<div>
-			<input type="radio" onchange="next();" id="category_other" name="category" value="other">
-			<input type="text" name="category_other_text" placeholder="Andere" onfocus="document.getElementById('category_other').checked=true;">
+			<input type="radio" onchange="document.getElementById('category_other_text').focus();" id="category_other" name="category" value="other">
+			<input type="text" id="category_other_text" name="category_other_text" placeholder="Andere" onfocus="document.getElementById('category_other').checked=true;">
 		</div>
 		<br>
 		<button type="button" onclick="next();">Weiter</button>
-		<br>
+		<br><br>
 		<label>Frage 1 / 5</label>
 	</div><!--#calculator_question_0-->
 
@@ -274,8 +328,8 @@
 			<label for="features_commerce">E-Commerce</label>
 		</div>
 		<div>
-			<input type="checkbox" id="features_other" name="features" value="other">
-			<input type="text" name="features_othe_textr" placeholder="Andere" onfocus="document.getElementById('features_other').checked=true;">
+			<input type="checkbox" id="features_other" name="features" value="other" onchange="document.getElementById('features_other_text').focus();">
+			<input type="text" id="features_other_text" name="features_other_text" placeholder="Andere" onfocus="document.getElementById('features_other').checked=true;">
 		</div>
 
 		<br>
@@ -333,16 +387,22 @@
 		<br>
 		<small id="error">Pflichtfeld</small>
 		<br>
-		<input type="tel" placeholder="Telefon" name="phone">
+		<input type="tel" placeholder="Telefon" name="phone" id="phone">
 		<br>
 		<small>Optional f&uuml;r R&uuml;ckfragen</small></p>
 
 		<br>
-		<button id="submit" type="button" onclick="prev();">Zur&uuml;ck</button>
-		<button type="submit" disabled>Kostensch&auml;tzung anfordern</button>
-		<br>
+		<button type="button" onclick="prev();">Zur&uuml;ck</button>
+		<button id="submit" type="submit" disabled>Berechnen</button>
+		<br><br>
 		<label>Frage 5 / 5</label>
 	</div><!--#calculator_question_4-->
 </form>
-</body>
-</html>
+
+<div id="thank_you" style="display: none;">
+	<b>Vielen Dank</b>
+	<p>Wir haben Ihnen eine E-Mail an {{email}} geschickt.</p>
+	<p>Bitte klicken Sie auf den Link darin, um Ihre E-Mail-Adresse zu best&auml;tigen.</p>
+	<p>Wir senden Ihnen dann sofort Ihre Kostensch&auml;tzung zu.</p>
+	<button type="button" onclick="location.reload();">Neue Anfrage erstellen</button>
+</div>
