@@ -90,33 +90,33 @@
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
 
-			var submitButton = document.getElementById("submit");
-			submitButton.disabled = true;
-			submitButton.innerHTML = "Bitte warten";
+		var submitButton = document.getElementById("submit");
+		submitButton.disabled = true;
+		submitButton.innerHTML = "Bitte warten";
 
-			fetch(event.target.action, {
-				method: 'POST',
-				body: new URLSearchParams(new FormData(event.target)) // event.target is the form
-			}).then((resp) => {
-				return resp.json(); // or resp.text() or whatever the server sends
-			}).then((body) => {
+		fetch(event.target.action, {
+			method: 'POST',
+			body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+		}).then((resp) => {
+			return resp.json(); // or resp.text() or whatever the server sends
+	}).then((body) => {
 
-				console.log(body);
+			console.log(body);
 
-				// Show thank you
-				var form = document.forms['calculator'];
-				form.style.display = "none";
-				var thankYou = document.getElementById("thank_you");
-				thankYou.style.display = "block";
-				thankYou.innerHTML = thankYou.innerHTML.replace("{{email}}", document.getElementById("email").value);
+		// Show thank you
+		var form = document.forms['calculator'];
+		form.style.display = "none";
+		var thankYou = document.getElementById("thank_you");
+		thankYou.style.display = "block";
+		thankYou.innerHTML = thankYou.innerHTML.replace("{{email}}", document.getElementById("email").value);
 
-			}).catch((error) => {
-				alert(error);
-				var submitButton = document.getElementById("submit");
-				submitButton.disabled = false;
-				submitButton.innerHTML = "Erneut probieren";
-			});
-		});
+	}).catch((error) => {
+			alert(error);
+		var submitButton = document.getElementById("submit");
+		submitButton.disabled = false;
+		submitButton.innerHTML = "Erneut probieren";
+	});
+	});
 	}
 
 	function updateValue(e) {
@@ -213,14 +213,12 @@
 		console.log(totalPrice);
 
 		//TRACKING
-		if (e.eventPhase == 3) { // Those events are fired twice for some reason. Only tracking once.
-			dataLayer.push({
-				'form_field_name': e.target.name,
-				'form_field_value': e.target.value + ": " + e.target.checked,
-				'form_total_value': totalPrice,
-				'event': 'price_calculator_form_entry'
-			});
-		}
+		dataLayer.push({
+			'form_field_name': e.target.name,
+			'form_field_value': e.target.value + ": " + e.target.checked,
+			'form_total_value': totalPrice,
+			'event': 'price_calculator_form_entry'
+		});
 	}
 
 </script>
