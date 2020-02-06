@@ -66,15 +66,18 @@
 		toggleQuestionVisibility();
 	}
 	function toggleQuestionVisibility() {
-		var questions = document.getElementsByClassName("calculator_question");
-		for (var i = 0; i < 5; i++) {
-			questions[i].style.display = "none";
-		}
-		questions[currentQuestion].style.display = "block";
 
-		if (currentQuestion == 4) {
-			document.getElementById("email").focus();
-		}
+		setTimeout(function(){
+			var questions = document.getElementsByClassName("calculator_question");
+			for (var i = 0; i < 5; i++) {
+				questions[i].style.display = "none";
+			}
+			questions[currentQuestion].style.display = "block";
+
+			if (currentQuestion == 4) {
+				document.getElementById("email").focus();
+			}
+		}, 300);
 	}
 
 	window.onload = function() {
@@ -235,12 +238,12 @@
 
 		<div>
 			<input type="radio" onchange="next();" id="category_business" name="category" value="business">
-			<label for="category_business">Business</label>
+			<label for="category_business">Gesch&auml;ftlich</label>
 		</div>
 
 		<div>
 			<input type="radio" onchange="next();" id="category_entertainment" name="category" value="entertainment">
-			<label for="category_entertainment">Entertainment</label>
+			<label for="category_entertainment">Unterhaltung</label>
 		</div>
 		<div>
 			<input type="radio" onchange="next();" id="category_eat_and_drink" name="category" value="eat_and_drink">
@@ -248,12 +251,29 @@
 		</div>
 		<div>
 			<input type="radio" onchange="document.getElementById('category_other_text').focus();" id="category_other" name="category" value="other">
-			<input type="text" id="category_other_text" name="category_other_text" placeholder="Andere" onfocus="document.getElementById('category_other').checked=true;">
+			<select id="category_other_text" name="category_other_text" placeholder="Andere" onfocus="document.getElementById('category_other').checked=true;" onchange="next();">
+				<option value="">Andere</option>
+				<option value="books">B&uuml;cher</option>
+				<option value="utilities">Dienstprogramme</option>
+				<option value="finance">Finanzen</option>
+				<option value="foto_and_video">Foto &amp; Video</option>
+				<option value="health_and_fitness">Gesundheit & Fitness</option>
+				<option value="lifestyle">Lifestyle</option>
+				<option value="medicin">Medizin</option>
+				<option value="music">Musik</option>
+				<option value="news">Nachrichten</option>
+				<option value="productivity">Produktivit&auml;t</option>
+				<option value="travel">Reisen</option>
+				<option value="shopping">Shopping</option>
+				<option value="social_media">Social Media</option>
+				<option value="games">Spiele</option>
+				<option value="sports">Sport</option>
+			</select>
 		</div>
 		<br>
 		<button type="button" onclick="next();">Weiter</button>
 		<br><br>
-		<label>Frage 1 / 5</label>
+		<label>Frage 1 / 4</label>
 	</div><!--#calculator_question_0-->
 
 	<div class="calculator_question" id="calculator_question_1">
@@ -265,6 +285,7 @@
 				<td>1-5</td>
 				<td>6-10</td>
 				<td>Mehr</td>
+				<td>Wei&szlig; nicht</td>
 			</tr>
 			<tr>
 				<td>
@@ -276,6 +297,7 @@
 				<td><input type="radio" id="number_of_views_simple_few" name="number_of_simple_views" value="few"></td>
 				<td><input type="radio" id="number_of_views_simple_medium" name="number_of_simple_views" value="medium"></td>
 				<td><input type="radio" id="number_of_views_simple_loads" name="number_of_simple_views" value="loads"></td>
+				<td><input type="radio" id="number_of_views_simple_dont_know" name="number_of_simple_views" value="dont_know" checked></td>
 			</tr>
 			<tr>
 				<td>
@@ -287,6 +309,7 @@
 				<td><input type="radio" onchange="next();" id="number_of_views_complex_few" name="number_of_complex_views" value="few"></td>
 				<td><input type="radio" onchange="next();" id="number_of_views_complex_medium" name="number_of_complex_views" value="medium"></td>
 				<td><input type="radio" onchange="next();" id="number_of_views_complex_loads" name="number_of_complex_views" value="loads"></td>
+				<td><input type="radio" id="number_of_views_complex_dont_know" name="number_of_complex_views" value="dont_know" checked></td>
 			</tr>
 		</table>
 
@@ -294,7 +317,7 @@
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
 		<br><br>
-		<label>Frage 2 / 5</label>
+		<label>Frage 2 / 4</label>
 	</div><!--#calculator_question_1-->
 
 	<div class="calculator_question" id="calculator_question_2">
@@ -336,19 +359,19 @@
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
 		<br><br>
-		<label>Frage 3 / 5</label>
+		<label>Frage 3 / 4</label>
 	</div><!--#calculator_question_2-->
 
 	<div class="calculator_question" id="calculator_question_3">
 		<p><b>Plattform</b></p>
 		<div>
-			<input type="checkbox" id="platform_ios" name="platform" value="ios">
+			<input type="checkbox" id="platform_ios" name="platform" value="ios" checked>
 			<label for="platform_ios">
 				iOS
 			</label>
 		</div>
 		<div>
-			<input type="checkbox" id="platform_android" name="platform" value="android">
+			<input type="checkbox" id="platform_android" name="platform" value="android" checked>
 			<label for="platform_android">
 				Android
 			</label>
@@ -360,7 +383,7 @@
 
 		<p><b>Content-Management-System (CMS)</b></p>
 		<div>
-			<input type="radio" onchange="next();" id="cms_none" name="cms" value="none">
+			<input type="radio" onchange="next();" id="cms_none" name="cms" value="none" checked>
 			<label for="cms_none">Keines</small>
 			</label>
 		</div>
@@ -377,25 +400,23 @@
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button type="button" onclick="next();">Weiter</button>
 		<br><br>
-		<label>Frage 3 / 5</label>
+		<label>Frage 3 / 4</label>
 	</div><!--#calculator_question_3-->
 
 	<div class="calculator_question" id="calculator_question_4">
 		<p><b>Kontaktdaten</b></p>
 		<p>Wir senden Ihnen Ihre Kostensch&auml;tzung gleich zu.</p>
-		<input id="email" type="email" name="email" placeholder="E-Mail" onkeyup="validEmail(this);" onchange="validEmail(this);">
+		<input id="email" type="email" name="email" placeholder="E-Mail (Pflichtfeld)" onkeyup="validEmail(this);" onchange="validEmail(this);">
 		<br>
-		<small id="error">Pflichtfeld</small>
+		<small id="error"></small>
 		<br>
-		<input type="tel" placeholder="Telefon" name="phone" id="phone">
-		<br>
-		<small>Optional f&uuml;r R&uuml;ckfragen</small></p>
+		<input type="tel" placeholder="Telefon (Optional)" name="phone" id="phone">
 
 		<br>
 		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button id="submit" type="submit" disabled>Berechnen</button>
 		<br><br>
-		<label>Frage 5 / 5</label>
+		<label>Frage 4 / 4</label>
 	</div><!--#calculator_question_4-->
 </form>
 
