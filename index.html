@@ -1,8 +1,5 @@
 <style>
 
-	.calculator_question {
-		display: none;
-	}
 	input {
 		margin: 10px;
 	}
@@ -55,29 +52,6 @@
 			errorLabel.style.color = "red";
 			submitButton.disabled = true;
 		}
-	}
-
-	function next() {
-		currentQuestion++;
-		toggleQuestionVisibility();
-	}
-	function prev() {
-		currentQuestion--;
-		toggleQuestionVisibility();
-	}
-	function toggleQuestionVisibility() {
-
-		setTimeout(function(){
-			var questions = document.getElementsByClassName("calculator_question");
-			for (var i = 0; i < 5; i++) {
-				questions[i].style.display = "none";
-			}
-			questions[currentQuestion].style.display = "block";
-
-			if (currentQuestion == 4) {
-				document.getElementById("email").focus();
-			}
-		}, 300);
 	}
 
 	window.onload = function() {
@@ -230,7 +204,7 @@
 	<input type="hidden" id="cost" name="cost" value="15">
 	<div class="calculator_question" id="calculator_question_0" style="display: block;">
 		<p><b>App-Kosten sch&auml;tzen</b></p>
-		<p><b>Kategorie</b></p>
+		<p><b>Kategorie (Frage 1 / 5)</b></p>
 		<div>
 			<input type="radio" onchange="next();" id="category_education" name="category" value="education">
 			<label for="category_education">Bildung</label>
@@ -270,14 +244,12 @@
 				<option value="sports">Sport</option>
 			</select>
 		</div>
-		<br>
-		<button type="button" onclick="next();">Weiter</button>
-		<br><br>
-		<label>Frage 1 / 4</label>
 	</div><!--#calculator_question_0-->
 
+	<br><br>
+
 	<div class="calculator_question" id="calculator_question_1">
-		<p><b>Anzahl der Ansichten</b></p>
+		<p><b>Anzahl der Ansichten (Frage 2 / 5)</b></p>
 		<table>
 			<tr>
 				<td></td>
@@ -312,16 +284,12 @@
 				<td><input type="radio" id="number_of_views_complex_dont_know" name="number_of_complex_views" value="dont_know" checked></td>
 			</tr>
 		</table>
-
-		<br>
-		<button type="button" onclick="prev();">Zur&uuml;ck</button>
-		<button type="button" onclick="next();">Weiter</button>
-		<br><br>
-		<label>Frage 2 / 4</label>
 	</div><!--#calculator_question_1-->
 
+	<br><br>
+
 	<div class="calculator_question" id="calculator_question_2">
-		<p><b>Features</b></p>
+		<p><b>Features (Frage 3 / 5)</b></p>
 		<div>
 			<input type="checkbox" id="features_account" name="features" value="account">
 			<label for="features_account">Benutzerkonto</label>
@@ -354,16 +322,12 @@
 			<input type="checkbox" id="features_other" name="features" value="other" onchange="document.getElementById('features_other_text').focus();">
 			<input type="text" id="features_other_text" name="features_other_text" placeholder="Andere" onfocus="document.getElementById('features_other').checked=true;">
 		</div>
-
-		<br>
-		<button type="button" onclick="prev();">Zur&uuml;ck</button>
-		<button type="button" onclick="next();">Weiter</button>
-		<br><br>
-		<label>Frage 3 / 4</label>
 	</div><!--#calculator_question_2-->
 
+	<br><br>
+
 	<div class="calculator_question" id="calculator_question_3">
-		<p><b>Plattform</b></p>
+		<p><b>Plattform  (Frage 4 / 5)</b></p>
 		<div>
 			<input type="checkbox" id="platform_ios" name="platform" value="ios" checked>
 			<label for="platform_ios">
@@ -381,7 +345,9 @@
 			<label for="platform_web">Web</label>
 		</div>
 
-		<p><b>Content-Management-System (CMS)</b></p>
+		<br><br>
+
+		<p><b>Content-Management-System (CMS) (Frage 5 / 5)</b></p>
 		<div>
 			<input type="radio" onchange="next();" id="cms_none" name="cms" value="none" checked>
 			<label for="cms_none">Keines</small>
@@ -396,12 +362,9 @@
 			<label for="cms_custom">Auf mich zugeschnitten</label>
 		</div>
 
-		<br>
-		<button type="button" onclick="prev();">Zur&uuml;ck</button>
-		<button type="button" onclick="next();">Weiter</button>
-		<br><br>
-		<label>Frage 3 / 4</label>
 	</div><!--#calculator_question_3-->
+
+	<br><br>
 
 	<div class="calculator_question" id="calculator_question_4">
 		<p><b>Kontaktdaten</b></p>
@@ -413,10 +376,7 @@
 		<input type="tel" placeholder="Telefon (Optional)" name="phone" id="phone">
 
 		<br>
-		<button type="button" onclick="prev();">Zur&uuml;ck</button>
 		<button id="submit" type="submit" disabled>Berechnen</button>
-		<br><br>
-		<label>Frage 4 / 4</label>
 	</div><!--#calculator_question_4-->
 </form>
 
