@@ -89,6 +89,13 @@
 			form[i].addEventListener('change', updateValue);
 		}
 
+		// Sent email to GTM for processing
+		//TRACKING
+		dataLayer.push({
+			'email': document.getElementById("email").value,
+			'event': 'form_submit'
+		});
+
 		// Fetch the POST to handle the sending more elagantly.
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
